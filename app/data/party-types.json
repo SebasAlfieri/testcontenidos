@@ -1,0 +1,5 @@
+[
+  { "id": "caotico", "name": "fiestero caótico", "emoji": "⚡", "traits": "Baila · Ruidoso · Tragos", "description": "La pista es tu hábitat natural. Llegás con energía de sobra y te vas con una anécdota que nadie puede contar completa.", "playlist": "Navidad sin frenos", "playlistUrl": "https://open.spotify.com/" },
+  { "id": "nostalgico", "name": "fiestero nostálgico", "emoji": "♥", "traits": "Sensible · Cariñoso · Canciones", "description": "Un brindis tuyo viene con abrazo incluido. Encontrás la emoción en cada canción y hacés que todos se sientan en casa.", "playlist": "Brindis y recuerdos", "playlistUrl": "https://open.spotify.com/" },
+  { "id": "chill", "name": "fiestero chill", "emoji": "☁", "traits": "Tranquilo · Buen comer · Cero gritos", "description": "Tu superpoder es disfrutar sin apuro. Buena charla, algo rico y la música justa: para vos, eso ya es una gran noche.", "playlist": "Noche buena, noche suave", "playlistUrl": "https://open.spotify.com/" }
+]
