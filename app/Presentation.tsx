@@ -1,42 +1,19 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { BuildingScreen } from "./components/BuildingScreen";
+import { useCallback, useState } from "react";
+import { CarouselScreen } from "./components/CarouselScreen";
 import { IntroScreen } from "./components/IntroScreen";
 import { LandingScreen } from "./components/LandingScreen";
 import { LoadingScreen } from "./components/LoadingScreen";
 
-type Stage = "landing" | "loading" | "intro" | "building";
-
-function requestFullscreen() {
-  const element = document.documentElement as HTMLElement & {
-    webkitRequestFullscreen?: () => Promise<void>;
-  };
-  const request =
-    element.requestFullscreen ?? element.webkitRequestFullscreen;
-  if (request && !document.fullscreenElement) {
-    request.call(element).catch(() => {});
-  }
-}
+type Stage = "landing" | "loading" | "intro" | "carousel";
 
 export default function Presentation() {
   const [stage, setStage] = useState<Stage>("landing");
 
   const handleStart = useCallback(() => {
-    requestFullscreen();
     setStage("loading");
   }, []);
-
-  useEffect(() => {
-    const onFullscreenChange = () => {
-      if (!document.fullscreenElement && stage !== "landing") {
-        setStage("landing");
-      }
-    };
-    document.addEventListener("fullscreenchange", onFullscreenChange);
-    return () =>
-      document.removeEventListener("fullscreenchange", onFullscreenChange);
-  }, [stage]);
 
   if (stage === "landing") {
     return <LandingScreen onStart={handleStart} />;
@@ -47,8 +24,8 @@ export default function Presentation() {
   }
 
   if (stage === "intro") {
-    return <IntroScreen onFinish={() => setStage("building")} />;
+    return <IntroScreen onFinish={() => setStage("carousel")} />;
   }
 
-  return <BuildingScreen />;
+  return <CarouselScreen />;
 }

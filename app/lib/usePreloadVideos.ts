@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { VIDEO_ASSETS } from "./videos";
+import { CAROUSEL_SLIDES, VIDEO_ASSETS } from "./videos";
 
 function waitForSeek(video: HTMLVideoElement, timeoutMs: number) {
   return new Promise<void>((resolve) => {
@@ -17,17 +17,13 @@ function waitForSeek(video: HTMLVideoElement, timeoutMs: number) {
   });
 }
 
-async function warmSeekTargets(
-  video: HTMLVideoElement,
-  targets: readonly number[],
-) {
-  for (const target of Array.from(targets).sort((a, b) => a - b)) {
-    video.currentTime = target;
+async function warmVideo(video: HTMLVideoElement) {
+  const duration = video.duration;
+  if (Number.isFinite(duration) && duration > 0) {
+    video.currentTime = Math.max(duration - 0.1, 0);
     await waitForSeek(video, 6000);
   }
-  try {
-    video.currentTime = 0;
-  } catch {}
+  video.currentTime = 0;
 }
 
 function disposeVideos(videos: HTMLVideoElement[]) {
@@ -46,7 +42,7 @@ export function usePreloadVideos(onDone: () => void) {
     let cancelled = false;
     const videos: HTMLVideoElement[] = [];
     let finished = 0;
-    const total = VIDEO_ASSETS.length;
+    const total = VIDEO_ASSETS.length + CAROUSEL_SLIDES.length;
 
     const container = document.createElement("div");
     container.setAttribute("aria-hidden", "true");
@@ -77,16 +73,23 @@ export function usePreloadVideos(onDone: () => void) {
 
       video.addEventListener("canplaythrough", () => {
         if (cancelled) return;
-        if (asset.preloadTargets && asset.preloadTargets.length > 0) {
-          warmSeekTargets(video, asset.preloadTargets).then(markFinished);
-        } else {
-          markFinished();
-        }
+        warmVideo(video).then(markFinished);
       });
       video.addEventListener("error", () => {
         if (!cancelled) markFinished();
       });
       video.load();
+    }
+
+    for (const slide of CAROUSEL_SLIDES) {
+      const image = new window.Image();
+      image.onload = () => {
+        if (!cancelled) markFinished();
+      };
+      image.onerror = () => {
+        if (!cancelled) markFinished();
+      };
+      image.src = slide.src;
     }
 
     document.body.appendChild(container);
