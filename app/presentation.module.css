@@ -27,44 +27,72 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 34px;
+  gap: 30px;
   padding: 0 20px;
   animation: riseIn 0.7s ease both;
 }
 
 .machine {
-  --cell: clamp(76px, 16.5vh, 140px);
-  --reelWidth: calc(var(--cell) * 0.84);
+  --cell: clamp(78px, 15vh, 126px);
+  --reelWidth: calc(var(--cell) * 0.86);
   --reelGap: clamp(8px, 1.4vw, 18px);
   --reelBg: #0e1013;
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(18px, 4vw, 58px);
-  padding: clamp(18px, 2.6vw, 32px);
-  border-radius: 28px;
-  background: linear-gradient(160deg, #1b1e24, #101216 62%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  gap: clamp(16px, 2.4vw, 26px);
+  padding: clamp(20px, 3vw, 32px) clamp(20px, 3.2vw, 40px);
+  border-radius: 32px;
+  background: linear-gradient(168deg, #23272f, #101216 52%, #15181d);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow:
-    0 34px 90px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    0 40px 100px rgba(0, 0, 0, 0.62),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
   transition: box-shadow 0.4s ease;
+}
+
+.machine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 3px;
+  border-radius: 0 0 4px 4px;
+  opacity: 0.75;
+  background: linear-gradient(
+    90deg,
+    rgba(245, 158, 11, 0),
+    #f59e0b,
+    #fbbf24,
+    #f59e0b,
+    rgba(245, 158, 11, 0)
+  );
 }
 
 .machineWin {
   box-shadow:
-    0 34px 90px rgba(0, 0, 0, 0.6),
+    0 40px 100px rgba(0, 0, 0, 0.62),
     0 0 0 1px rgba(251, 191, 36, 0.5),
-    0 0 60px rgba(245, 158, 11, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+    0 0 62px rgba(245, 158, 11, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
+
+.machineBody {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 3vw, 36px);
 }
 
 .reelStage {
-  padding: clamp(10px, 1.6vw, 18px);
-  border-radius: 22px;
-  background: linear-gradient(180deg, #22262d, #15181d);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6);
+  padding: clamp(12px, 1.9vw, 18px);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #2c313a, #16191f);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    inset 0 2px 14px rgba(0, 0, 0, 0.78),
+    0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .reelRow {
@@ -76,7 +104,7 @@
 .reel {
   position: relative;
   width: var(--reelWidth);
-  height: calc(var(--cell) * 3);
+  height: var(--cell);
   overflow: hidden;
   border-radius: 12px;
   background: var(--reelBg);
@@ -85,53 +113,19 @@
     inset 0 10px 20px rgba(0, 0, 0, 0.7);
 }
 
-.reel::before,
-.reel::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  height: calc(var(--cell) * 0.7);
-  pointer-events: none;
-}
-
-.reel::before {
-  top: 0;
-  background: linear-gradient(
-    to bottom,
-    var(--reelBg),
-    rgba(14, 16, 19, 0)
-  );
-}
-
-.reel::after {
-  bottom: 0;
-  background: linear-gradient(
-    to top,
-    var(--reelBg),
-    rgba(14, 16, 19, 0)
-  );
-}
-
 .strip {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  transform: translate3d(0, calc(var(--cell) * (1 - var(--to))), 0);
+  transform: translate3d(0, calc(var(--cell) * var(--to) * -1), 0);
   will-change: transform, filter;
 }
 
 .stripSpinning {
-  animation-name: reelSpin;
-  animation-fill-mode: both;
-  animation-timing-function:
-    cubic-bezier(0.5, 0, 0.9, 0.4),
-    cubic-bezier(0.15, 0.65, 0.25, 1),
-    cubic-bezier(0.4, 0, 0.3, 1),
-    cubic-bezier(0.4, 0, 0.6, 1),
-    cubic-bezier(0.3, 0, 0.4, 1);
+  animation-name: reelSpin, reelBlur;
+  animation-fill-mode: both, both;
+  animation-timing-function: cubic-bezier(0.14, 0.72, 0.18, 1), linear;
 }
 
 .symbol {
@@ -176,7 +170,7 @@
   position: relative;
   flex: none;
   width: clamp(58px, 8vw, 96px);
-  height: clamp(180px, 30vh, 250px);
+  height: clamp(124px, 21vh, 176px);
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
@@ -265,42 +259,50 @@
 }
 
 .result {
+  width: 100%;
   margin: 0;
-  min-height: 1.4em;
+  padding-top: 18px;
+  min-height: 1.5em;
   text-align: center;
-  color: #d6d3d1;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
+  color: #a8a29e;
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   font-variant-numeric: tabular-nums;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-.machineWin + .result {
+.machineWin .result {
   color: #fbbf24;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-shadow: 0 0 22px rgba(245, 158, 11, 0.55);
 }
 
+/* El strip recorre todo el viaje frenando hasta encajar en el simbolo. */
 @keyframes reelSpin {
   0% {
-    transform: translate3d(0, calc(var(--cell) * (1 - var(--from))), 0);
-    filter: blur(0px);
-  }
-  5% {
-    filter: blur(7px);
-  }
-  80% {
-    filter: blur(5px);
-  }
-  92% {
-    transform: translate3d(0, calc(var(--cell) * (1.18 - var(--to))), 0);
-    filter: blur(0px);
-  }
-  96% {
-    transform: translate3d(0, calc(var(--cell) * (0.93 - var(--to))), 0);
+    transform: translate3d(0, calc(var(--cell) * var(--from) * -1), 0);
   }
   100% {
-    transform: translate3d(0, calc(var(--cell) * (1 - var(--to))), 0);
+    transform: translate3d(0, calc(var(--cell) * var(--to) * -1), 0);
+  }
+}
+
+@keyframes reelBlur {
+  0% {
+    filter: blur(0px);
+  }
+  8% {
+    filter: blur(6px);
+  }
+  40% {
+    filter: blur(3px);
+  }
+  78% {
+    filter: blur(0.5px);
+  }
+  100% {
     filter: blur(0px);
   }
 }

@@ -97,15 +97,15 @@ export function SlotMachineScreen() {
     <div className={styles.screen}>
       <div className={styles.slotWrap}>
         <div className={`${styles.machine} ${won ? styles.machineWin : ""}`}>
-          <div className={styles.reelStage}>
+          <div className={styles.machineBody}>
+            <div className={styles.reelStage}>
             <div className={styles.reelRow}>
               {runs.map((run, reel) => {
-                const first = run.to - 1 - CELL_MARGIN;
-                const last = run.from + 1 + CELL_MARGIN;
+                const first = run.to - CELL_MARGIN;
+                const last = run.from + CELL_MARGIN;
                 const cells = [];
                 for (let index = first; index <= last; index += 1) {
                   const symbol = symbolAt(index);
-                  const inWindow = index >= run.to - 1 && index <= run.to + 1;
                   cells.push(
                     <div className={styles.symbol} key={index}>
                       <Image
@@ -114,18 +114,21 @@ export function SlotMachineScreen() {
                         alt=""
                         fill
                         sizes="(max-width: 720px) 26vw, 140px"
-                        loading={inWindow ? "eager" : "lazy"}
+                        loading="eager"
                         draggable={false}
                       />
                     </div>,
                   );
                 }
 
+                const duration = SPIN_DURATIONS[reel] ?? 4200;
+                const delay = SPIN_DELAYS[reel] ?? 0;
+
                 const stripStyle = {
                   "--from": run.from - first,
                   "--to": run.to - first,
-                  animationDuration: `${SPIN_DURATIONS[reel] ?? 4200}ms`,
-                  animationDelay: `${SPIN_DELAYS[reel] ?? 0}ms`,
+                  animationDuration: `${duration}ms`,
+                  animationDelay: `${delay}ms`,
                 } as CSSProperties;
 
                 return (
@@ -141,35 +144,36 @@ export function SlotMachineScreen() {
                 );
               })}
               <div className={styles.payline} aria-hidden="true" />
+              </div>
             </div>
+
+            <button
+              type="button"
+              className={styles.lever}
+              onClick={pullLever}
+              aria-label="Girar la palanca"
+              aria-busy={spinning}
+            >
+              <span
+                key={dip}
+                className={`${styles.leverArm} ${dip > 0 ? styles.leverArmDip : ""}`}
+              >
+                <span className={styles.leverKnob} />
+              </span>
+              <span className={styles.leverPlate} />
+            </button>
           </div>
 
-          <button
-            type="button"
-            className={styles.lever}
-            onClick={pullLever}
-            aria-label="Girar la palanca"
-            aria-busy={spinning}
-          >
-            <span
-              key={dip}
-              className={`${styles.leverArm} ${dip > 0 ? styles.leverArmDip : ""}`}
-            >
-              <span className={styles.leverKnob} />
-            </span>
-            <span className={styles.leverPlate} />
-          </button>
+          <p className={styles.result} role="status">
+            {result === null
+              ? spinning
+                ? "Girando…"
+                : "Toca la palanca para girar los tres rodillos"
+              : won
+                ? `¡Premio! Las tres vistas son ${SLIDES[landed[0]!]!.label}`
+                : landed.map((index) => SLIDES[index]!.label).join(" · ")}
+          </p>
         </div>
-
-        <p className={styles.result} role="status">
-          {result === null
-            ? spinning
-              ? "Girando…"
-              : "Toca la palanca para girar los tres rodillos"
-            : won
-              ? `¡Premio! Las tres vistas son ${SLIDES[landed[0]!]!.label}`
-              : landed.map((index) => SLIDES[index]!.label).join(" · ")}
-        </p>
       </div>
     </div>
   );
