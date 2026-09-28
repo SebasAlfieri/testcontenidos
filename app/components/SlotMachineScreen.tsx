@@ -95,7 +95,13 @@ export function SlotMachineScreen() {
 
   return (
     <div className={styles.screen}>
-      <div className={styles.slotWrap}>
+      <div className={styles.cabinet}>
+        <div className={styles.marquee}>
+          <span className={styles.marqueeBulbs} aria-hidden="true" />
+          <p className={styles.kicker}>Tres vistas · un premio</p>
+          <h1 className={styles.title}>Premio Mayor</h1>
+        </div>
+
         <div className={`${styles.machine} ${won ? styles.machineWin : ""}`}>
           <div className={styles.machineBody}>
             <div className={styles.reelStage}>
@@ -147,6 +153,8 @@ export function SlotMachineScreen() {
               </div>
             </div>
 
+            <span className={styles.leverMount} aria-hidden="true" />
+
             <button
               type="button"
               className={styles.lever}
@@ -168,12 +176,31 @@ export function SlotMachineScreen() {
             {result === null
               ? spinning
                 ? "Girando…"
-                : "Toca la palanca para girar los tres rodillos"
+                : "Toca la palanca o pulsa prueba tu suerte"
               : won
                 ? `¡Premio! Las tres vistas son ${SLIDES[landed[0]!]!.label}`
                 : landed.map((index) => SLIDES[index]!.label).join(" · ")}
           </p>
         </div>
+
+        <div className={styles.panel}>
+          <p className={styles.paytable}>
+            <span className={styles.paytableKey}>3 iguales</span>
+            <span className={styles.paytablePrize}>Premio</span>
+          </p>
+          <button
+            type="button"
+            className={styles.spinButton}
+            onClick={pullLever}
+            aria-busy={spinning}
+          >
+            <span key={dip} className={styles.spinButtonLabel}>
+              {spinning ? "Girando…" : "Prueba tu suerte"}
+            </span>
+          </button>
+        </div>
+
+        <div className={styles.base} aria-hidden="true" />
       </div>
     </div>
   );
