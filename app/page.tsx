@@ -1,5 +1,5 @@
-import Presentation from "./Presentation";
+import { SlotMachineScreen } from "./components/SlotMachineScreen";
 
 export default function Page() {
-  return <Presentation />;
+  return <SlotMachineScreen />;
 }
