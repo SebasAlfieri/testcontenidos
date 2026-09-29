@@ -24,6 +24,9 @@ const SPIN_DURATIONS = [3400, 4100, 4800];
 const SPIN_DELAYS = [0, 260, 520];
 const TOTAL_SPIN_MS = 5400;
 
+/* Cada reel se posiciona sobre el hueco real de maquina.png (1001x680). */
+const REEL_SLOTS = [styles.reelA, styles.reelB, styles.reelC];
+
 type ReelRun = {
   from: number;
   to: number;
@@ -97,63 +100,75 @@ export function SlotMachineScreen() {
     <div className={styles.screen}>
       <div className={styles.cabinet}>
         <div className={styles.marquee}>
-          <span className={styles.marqueeBulbs} aria-hidden="true" />
-          <p className={styles.kicker}>Tres vistas · un premio</p>
-          <h1 className={styles.title}>Premio Mayor</h1>
+          <Image
+            className={styles.logo}
+            src="/ziba/logo.png"
+            alt="Ziba"
+            width={411}
+            height={296}
+            sizes="(max-width: 480px) 34vw, 150px"
+            priority
+            draggable={false}
+          />
+          <h1 className={styles.title}>¿Cómo está tu vibra hoy?</h1>
+          <p className={styles.subtitle}>Prueba tu suerte y descubrí la mejor música</p>
         </div>
 
-        <div className={`${styles.machine} ${won ? styles.machineWin : ""}`}>
-          <div className={styles.machineBody}>
-            <div className={styles.reelStage}>
-            <div className={styles.reelRow}>
-              {runs.map((run, reel) => {
-                const first = run.to - CELL_MARGIN;
-                const last = run.from + CELL_MARGIN;
-                const cells = [];
-                for (let index = first; index <= last; index += 1) {
-                  const symbol = symbolAt(index);
-                  cells.push(
-                    <div className={styles.symbol} key={index}>
-                      <Image
-                        className={styles.symbolImage}
-                        src={symbol.src}
-                        alt=""
-                        fill
-                        sizes="(max-width: 720px) 26vw, 140px"
-                        loading="eager"
-                        draggable={false}
-                      />
-                    </div>,
-                  );
-                }
+        <div className={styles.machineStage}>
+          <div className={`${styles.machine} ${won ? styles.machineWin : ""}`}>
+            <Image
+              className={styles.machineImage}
+              src="/ziba/maquina.png"
+              alt=""
+              fill
+              sizes="(max-width: 480px) 88vw, 360px"
+              priority
+              draggable={false}
+            />
 
-                const duration = SPIN_DURATIONS[reel] ?? 4200;
-                const delay = SPIN_DELAYS[reel] ?? 0;
-
-                const stripStyle = {
-                  "--from": run.from - first,
-                  "--to": run.to - first,
-                  animationDuration: `${duration}ms`,
-                  animationDelay: `${delay}ms`,
-                } as CSSProperties;
-
-                return (
-                  <div className={styles.reel} key={reel}>
-                    <div
-                      key={`${reel}-${spinId}`}
-                      className={`${styles.strip} ${spinning ? styles.stripSpinning : ""}`}
-                      style={stripStyle}
-                    >
-                      {cells}
-                    </div>
-                  </div>
+            {runs.map((run, reel) => {
+              const first = run.to - CELL_MARGIN;
+              const last = run.from + CELL_MARGIN;
+              const cells = [];
+              for (let index = first; index <= last; index += 1) {
+                const symbol = symbolAt(index);
+                cells.push(
+                  <div className={styles.symbol} key={index}>
+                    <Image
+                      className={styles.symbolImage}
+                      src={symbol.src}
+                      alt=""
+                      fill
+                      sizes="(max-width: 480px) 22vw, 92px"
+                      loading="eager"
+                      draggable={false}
+                    />
+                  </div>,
                 );
-              })}
-              <div className={styles.payline} aria-hidden="true" />
-              </div>
-            </div>
+              }
 
-            <span className={styles.leverMount} aria-hidden="true" />
+              const duration = SPIN_DURATIONS[reel] ?? 4200;
+              const delay = SPIN_DELAYS[reel] ?? 0;
+
+              const stripStyle = {
+                "--from": run.from - first,
+                "--to": run.to - first,
+                animationDuration: `${duration}ms`,
+                animationDelay: `${delay}ms`,
+              } as CSSProperties;
+
+              return (
+                <div className={REEL_SLOTS[reel]} key={reel}>
+                  <div
+                    key={`${reel}-${spinId}`}
+                    className={`${styles.strip} ${spinning ? styles.stripSpinning : ""}`}
+                    style={stripStyle}
+                  >
+                    {cells}
+                  </div>
+                </div>
+              );
+            })}
 
             <button
               type="button"
@@ -164,30 +179,33 @@ export function SlotMachineScreen() {
             >
               <span
                 key={dip}
-                className={`${styles.leverArm} ${dip > 0 ? styles.leverArmDip : ""}`}
+                className={`${styles.leverSwing} ${dip > 0 ? styles.leverSwingDip : ""}`}
               >
-                <span className={styles.leverKnob} />
+                <Image
+                  className={styles.leverImage}
+                  src="/ziba/palanca.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 480px) 17vw, 62px"
+                  loading="eager"
+                  draggable={false}
+                />
               </span>
-              <span className={styles.leverPlate} />
             </button>
           </div>
-
-          <p className={styles.result} role="status">
-            {result === null
-              ? spinning
-                ? "Girando…"
-                : "Toca la palanca o pulsa prueba tu suerte"
-              : won
-                ? `¡Premio! Las tres vistas son ${SLIDES[landed[0]!]!.label}`
-                : landed.map((index) => SLIDES[index]!.label).join(" · ")}
-          </p>
         </div>
 
+        <span className={styles.srOnly} role="status">
+          {result === null
+            ? spinning
+              ? "Girando…"
+              : "Toca la palanca o pulsa prueba tu suerte"
+            : won
+              ? `¡Premio! Las tres son ${SLIDES[landed[0]!]!.label}`
+              : landed.map((index) => SLIDES[index]!.label).join(" · ")}
+        </span>
+
         <div className={styles.panel}>
-          <p className={styles.paytable}>
-            <span className={styles.paytableKey}>3 iguales</span>
-            <span className={styles.paytablePrize}>Premio</span>
-          </p>
           <button
             type="button"
             className={styles.spinButton}
@@ -199,8 +217,6 @@ export function SlotMachineScreen() {
             </span>
           </button>
         </div>
-
-        <div className={styles.base} aria-hidden="true" />
       </div>
     </div>
   );

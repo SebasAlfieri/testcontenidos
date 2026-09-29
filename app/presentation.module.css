@@ -6,11 +6,11 @@
   height: 100dvh;
   background:
     radial-gradient(
-      80% 80% at 50% 0%,
-      rgba(245, 158, 11, 0.12),
+      120% 90% at 50% 0%,
+      rgba(245, 158, 11, 0.18),
       transparent 60%
     ),
-    #0b0d10;
+    linear-gradient(180deg, #2a1408 0%, #150a04 60%, #0a0502 100%);
   color: #f5f5f4;
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   display: flex;
@@ -22,275 +22,136 @@
 }
 
 .cabinet {
-  --gold: #f59e0b;
-  --goldLight: #fbbf24;
+  --gold: #f6b21b;
+  --goldLight: #ffd35a;
+  --red: #b3120f;
+  --redDeep: #7d0a06;
   position: relative;
   z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(12px, 2vh, 18px);
-  width: min(430px, calc(100vw - 32px));
-  padding: clamp(14px, 2.4vh, 20px) clamp(14px, 3vw, 20px) 0;
-  border-radius: 30px 30px 10px 10px;
-  background:
-    linear-gradient(180deg, #2a1c0d 0%, #1b1410 12%, #16181d 40%, #121418 100%);
-  border: 1px solid rgba(245, 158, 11, 0.28);
-  box-shadow:
-    0 50px 120px rgba(0, 0, 0, 0.7),
-    0 0 0 1px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    inset 0 -2px 12px rgba(0, 0, 0, 0.6);
+  gap: clamp(10px, 1.7vh, 16px);
+  width: min(430px, calc(100vw - 20px), calc((100dvh - 24px) * 0.62));
+  padding: clamp(12px, 2vh, 18px) clamp(12px, 3vw, 20px) clamp(14px, 2.4vh, 22px);
   animation: riseIn 0.7s ease both;
-}
-
-.cabinet::before {
-  content: "";
-  position: absolute;
-  inset: 6px;
-  border-radius: 24px 24px 6px 6px;
-  pointer-events: none;
-  border: 1px solid rgba(245, 158, 11, 0.16);
 }
 
 .marquee {
   position: relative;
   width: 100%;
-  padding: clamp(12px, 2.2vh, 18px) 16px clamp(10px, 1.8vh, 14px);
-  text-align: center;
-  border-radius: 20px 20px 8px 8px;
-  background:
-    radial-gradient(120% 140% at 50% -20%, rgba(251, 191, 36, 0.28), transparent 62%),
-    linear-gradient(180deg, #33220e, #1c1409);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  box-shadow:
-    inset 0 0 24px rgba(245, 158, 11, 0.18),
-    0 6px 18px rgba(0, 0, 0, 0.5);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(4px, 0.9vh, 8px);
+  padding: clamp(4px, 0.8vh, 8px) 0;
 }
 
-.marqueeBulbs {
-  position: absolute;
-  inset: 5px;
-  border-radius: 16px 16px 4px 4px;
-  pointer-events: none;
-  background:
-    radial-gradient(circle, #fde68a 0 2px, rgba(253, 230, 138, 0) 2.5px) 0 0 / 22px 14px
-      repeat-x;
-  opacity: 0.5;
-  animation: bulbs 1.6s steps(2, end) infinite;
-}
-
-.kicker {
+.logo {
   position: relative;
-  margin: 0 0 4px;
-  font-size: 0.62rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(253, 230, 138, 0.75);
+  width: clamp(84px, 26%, 124px);
+  height: auto;
+  margin-bottom: clamp(2px, 0.6vh, 6px);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.45));
 }
 
 .title {
   position: relative;
   margin: 0;
-  font-size: clamp(1.35rem, 4.4vw, 1.9rem);
+  text-align: center;
+  font-size: clamp(1.35rem, 5.6vw, 1.95rem);
   font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #fff7e0;
+  line-height: 1.12;
+  color: #fff4d6;
   text-shadow:
-    0 0 18px rgba(251, 191, 36, 0.85),
-    0 2px 0 rgba(120, 53, 15, 0.6);
+    0 0 18px rgba(255, 190, 60, 0.85),
+    0 2px 0 rgba(90, 20, 4, 0.75);
+}
+
+.subtitle {
+  position: relative;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(0.76rem, 3.1vw, 0.92rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgba(255, 233, 168, 0.9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* La maquina deja hueco a la derecha para la palanca, como en el diseno. */
+.machineStage {
+  position: relative;
+  width: 100%;
+  padding-right: clamp(18px, 7.5vw, 36px);
 }
 
 .machine {
-  --cell: clamp(76px, 14.5vh, 120px);
-  --reelWidth: calc(var(--cell) * 0.86);
-  --reelGap: clamp(8px, 1.2vw, 14px);
-  --reelBg: #0e1013;
   position: relative;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(14px, 2.2vh, 22px);
-  padding: clamp(16px, 2.6vh, 24px) clamp(16px, 3vw, 26px);
-  border-radius: 12px;
-  background: linear-gradient(180deg, #1d2027, #101216);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    inset 0 -14px 28px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 0.4s ease;
+  container-type: inline-size;
+  aspect-ratio: 1001 / 680;
+  filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.55));
+  transition: filter 0.45s ease;
 }
 
 .machineWin {
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(251, 191, 36, 0.55),
-    0 0 44px rgba(245, 158, 11, 0.4);
+  filter: drop-shadow(0 0 24px rgba(255, 190, 60, 0.8))
+    drop-shadow(0 18px 26px rgba(0, 0, 0, 0.55));
 }
 
-.panel {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(8px, 1.4vh, 12px);
-  padding: clamp(12px, 2vh, 18px) clamp(16px, 3vw, 26px) clamp(16px, 2.6vh, 22px);
-  border-radius: 10px;
-  background: linear-gradient(180deg, #191c22, #0e1013);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.paytable {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.64rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.paytableKey {
-  color: #d6d3d1;
-}
-
-.paytablePrize {
-  padding: 3px 10px;
-  border-radius: 999px;
-  color: #1a1206;
-  font-weight: 800;
-  background: linear-gradient(180deg, var(--goldLight), var(--gold));
-}
-
-.spinButton {
-  appearance: none;
-  width: 100%;
-  padding: clamp(11px, 1.8vh, 15px) 18px;
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  background:
-    radial-gradient(120% 160% at 50% -30%, rgba(255, 255, 255, 0.45), transparent 60%),
-    linear-gradient(180deg, #fbbf24, #d97706 70%, #b45309);
-  box-shadow:
-    0 6px 0 #78350f,
-    0 14px 26px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
-  color: #2a1603;
-  font-size: clamp(0.9rem, 2.4vw, 1.05rem);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.2s ease;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.spinButton:hover {
-  filter: brightness(1.06);
-}
-
-.spinButton:active {
-  transform: translateY(4px);
-  box-shadow:
-    0 2px 0 #78350f,
-    0 8px 16px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.spinButton:focus-visible {
-  outline: 2px solid #fde68a;
-  outline-offset: 3px;
-}
-
-.spinButtonLabel {
-  display: block;
-  animation: buttonIn 0.3s ease both;
-}
-
-.base {
-  width: calc(100% + 18px);
-  height: clamp(14px, 2.4vh, 20px);
-  border-radius: 0 0 10px 10px;
-  background: linear-gradient(180deg, #3a2a15, #140e07);
-  border: 1px solid rgba(245, 158, 11, 0.24);
-  border-top: 0;
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.6);
-}
-
-.machineBody {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.leverMount {
-  position: absolute;
-  right: -30px;
-  bottom: -8px;
-  width: 28px;
-  height: 66%;
-  border-radius: 12px 14px 10px 10px;
+.machineImage {
+  object-fit: contain;
   pointer-events: none;
-  background: linear-gradient(90deg, #2c313a, #14161a 58%, #0c0e11);
-  border: 1px solid rgba(245, 158, 11, 0.28);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 10px 22px rgba(0, 0, 0, 0.55);
 }
 
-.leverMount::after {
-  content: "";
+/* Huecos exactos de maquina.png (1001 x 680) medidos en cqw. */
+.reelA,
+.reelB,
+.reelC {
   position: absolute;
-  inset: 6px 9px auto;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(245, 158, 11, 0),
-    rgba(251, 191, 36, 0.75),
-    rgba(245, 158, 11, 0)
-  );
-}
-
-.reelStage {
-  flex: 0 1 auto;
-  min-width: 0;
-  max-width: 100%;
-  padding: clamp(10px, 1.6vw, 16px);
-  border-radius: 20px;
-  background: linear-gradient(180deg, #2c313a, #16191f);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    inset 0 2px 14px rgba(0, 0, 0, 0.78),
-    0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.reelRow {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  gap: var(--reelGap);
-  width: 100%;
-}
-
-.reel {
-  position: relative;
-  flex: 0 1 var(--reelWidth);
-  width: var(--reelWidth);
-  min-width: 0;
-  height: var(--cell);
   overflow: hidden;
-  border-radius: 12px;
-  background: var(--reelBg);
+  border-radius: 1.2cqw;
+  background: #140c06;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 10px 20px rgba(0, 0, 0, 0.7);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+    inset 0 8px 16px rgba(0, 0, 0, 0.6);
+}
+
+.reelA {
+  --cell: 27.472cqw;
+  left: 10.689cqw;
+  top: 26.573cqw;
+  width: 24.176cqw;
+  height: var(--cell);
+}
+
+.reelB {
+  --cell: 27.273cqw;
+  left: 38.462cqw;
+  top: 26.573cqw;
+  width: 23.077cqw;
+  height: var(--cell);
+}
+
+.reelC {
+  --cell: 27.273cqw;
+  left: 65.235cqw;
+  top: 26.573cqw;
+  width: 24.076cqw;
+  height: var(--cell);
 }
 
 .strip {
@@ -316,28 +177,7 @@
 
 .symbolImage {
   object-fit: cover;
-  filter: contrast(1.03) saturate(1.04);
-}
-
-.payline {
-  position: absolute;
-  top: 50%;
-  left: calc(var(--reelGap) * -0.5);
-  right: calc(var(--reelGap) * -0.5);
-  z-index: 3;
-  height: var(--cell);
-  transform: translateY(-50%);
-  pointer-events: none;
-  border-top: 2px solid rgba(251, 191, 36, 0.6);
-  border-bottom: 2px solid rgba(251, 191, 36, 0.6);
-  box-shadow:
-    0 0 26px rgba(245, 158, 11, 0.25),
-    inset 0 0 26px rgba(245, 158, 11, 0.12);
-  border-radius: 3px;
-}
-
-.machineWin .payline {
-  animation: paylineGlow 1.05s ease-in-out infinite alternate;
+  filter: contrast(1.03) saturate(1.05);
 }
 
 .lever {
@@ -348,116 +188,90 @@
   padding: 0;
   cursor: pointer;
   position: absolute;
-  right: -39px;
-  bottom: -8px;
-  width: 46px;
-  height: clamp(112px, 18vh, 150px);
+  left: 91.81cqw;
+  top: 30.19cqw;
+  width: 14cqw;
+  height: 31.437cqw;
+  z-index: 4;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
-.lever:disabled {
-  cursor: default;
-}
-
-.lever:focus-visible {
-  outline: 2px solid #f59e0b;
-  outline-offset: 4px;
-  border-radius: 16px;
-}
-
-.leverPlate {
+.leverSwing {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  z-index: 2;
-  width: 26px;
-  height: 26px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: linear-gradient(150deg, #52525b, #18181b);
-  box-shadow:
-    0 3px 12px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
-}
-
-.leverArm {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
+  inset: 0;
   display: block;
-  width: 12px;
-  height: calc(100% - 34px);
-  transform-origin: 50% 100%;
-  transform: translateX(-50%) rotate(14deg);
+  transform-origin: 37% 82%;
   transition: transform 0.55s cubic-bezier(0.34, 1.42, 0.64, 1);
 }
 
-.leverArm::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    #3a3a40,
-    #d4d4d8 42%,
-    #71717a 70%,
-    #27272a
-  );
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+.leverImage {
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.5));
 }
 
-.leverKnob {
-  position: absolute;
-  top: -14px;
-  left: 50%;
-  width: 36px;
-  height: 36px;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at 34% 26%, #fecaca, #ef4444 52%, #991b1b);
-  box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.55),
-    inset 0 -5px 12px rgba(0, 0, 0, 0.4),
-    inset 0 3px 6px rgba(255, 255, 255, 0.35);
+.lever:focus-visible {
+  outline: 2px solid var(--goldLight);
+  outline-offset: 4px;
+  border-radius: 12px;
 }
 
-.leverArmDip {
+.leverSwingDip {
   animation: leverDip 0.62s cubic-bezier(0.4, 0, 0.5, 1) both;
 }
 
-@keyframes leverDip {
-  0% {
-    transform: translateX(-50%) rotate(14deg);
-  }
-  24% {
-    transform: translateX(-50%) rotate(-18deg);
-  }
-  100% {
-    transform: translateX(-50%) rotate(14deg);
-  }
-}
-
-.result {
+.panel {
   width: 100%;
-  margin: 0;
-  padding-top: 18px;
-  min-height: 1.5em;
-  text-align: center;
-  color: #a8a29e;
-  font-size: 0.82rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
-  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.machineWin .result {
-  color: #fbbf24;
-  font-weight: 700;
+.spinButton {
+  appearance: none;
+  width: 100%;
+  padding: clamp(11px, 1.8vh, 15px) 18px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 233, 168, 0.6);
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 160% at 50% -30%, rgba(255, 255, 255, 0.5), transparent 60%),
+    linear-gradient(180deg, #e02b1e, #a3120c 68%, #7d0a06);
+  box-shadow:
+    0 6px 0 #5a0806,
+    0 16px 28px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  color: #fff3d8;
+  font-size: clamp(0.85rem, 2.6vw, 1.02rem);
+  font-weight: 800;
   letter-spacing: 0.16em;
-  text-shadow: 0 0 22px rgba(245, 158, 11, 0.55);
+  text-transform: uppercase;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.2s ease;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.spinButton:hover {
+  filter: brightness(1.07);
+}
+
+.spinButton:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #5a0806,
+    0 8px 16px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.spinButton:focus-visible {
+  outline: 2px solid var(--goldLight);
+  outline-offset: 3px;
+}
+
+.spinButtonLabel {
+  display: block;
+  animation: buttonIn 0.3s ease both;
 }
 
 /* El strip recorre todo el viaje frenando hasta encajar en el simbolo. */
@@ -488,59 +302,15 @@
   }
 }
 
-@keyframes paylineGlow {
-  from {
-    box-shadow:
-      0 0 26px rgba(245, 158, 11, 0.25),
-      inset 0 0 26px rgba(245, 158, 11, 0.12);
-  }
-  to {
-    box-shadow:
-      0 0 46px rgba(251, 191, 36, 0.7),
-      inset 0 0 40px rgba(251, 191, 36, 0.35);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .stripSpinning {
-    animation-duration: 700ms !important;
-    animation-delay: 0ms !important;
-  }
-
-  .stripSpinning,
-  .leverArm,
-  .machineWin .payline {
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.15s !important;
-  }
-
-  .leverArmDip {
-    animation-duration: 0.3s !important;
-  }
-
-  .marqueeBulbs,
-  .spinButtonLabel {
-    animation: none !important;
-  }
-
-  .spinButton {
-    transition-duration: 0.15s !important;
-  }
-
-  .stripSpinning {
-    filter: none !important;
-  }
-}
-
-@keyframes bulbs {
+@keyframes leverDip {
   0% {
-    opacity: 0.28;
+    transform: rotate(0deg);
   }
-  50% {
-    opacity: 0.75;
+  22% {
+    transform: rotate(-18deg);
   }
   100% {
-    opacity: 0.28;
+    transform: rotate(0deg);
   }
 }
 
@@ -563,5 +333,31 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stripSpinning {
+    animation-duration: 700ms !important;
+    animation-delay: 0ms !important;
+    filter: none !important;
+  }
+
+  .stripSpinning,
+  .leverSwing {
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+  }
+
+  .leverSwingDip {
+    animation-duration: 0.3s !important;
+  }
+
+  .spinButtonLabel {
+    animation: none !important;
+  }
+
+  .spinButton {
+    transition-duration: 0.15s !important;
   }
 }
